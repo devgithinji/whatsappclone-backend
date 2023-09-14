@@ -7,6 +7,7 @@ import com.densoft.whatsappclone.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +32,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest, Authentication authentication) {
-        User user = userService.findUserProfile(authentication.getName());
+    public ResponseEntity<ApiResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest, @AuthenticationPrincipal User user) {
         userService.updateUser(user.getId(), updateUserRequest);
         return ResponseEntity.ok(new ApiResponse("user updated successfully", true));
     }
